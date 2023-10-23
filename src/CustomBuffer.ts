@@ -176,6 +176,10 @@ class CustomBuffer {
 		return this.#buffer.subarray(this.#offset)
 	}
 
+	get length(): number {
+		return this.#buffer.length
+	}
+
 	get buffer(): Buffer {
 		return this.#buffer
 	}

@@ -1,5 +1,6 @@
 # Mindustry Utils
 
--   Connect
+-   Ping Server
 -   Generate MSCH
 -   Parse MSCH
+-   Parse Logic Config

@@ -64,6 +64,8 @@ export const ReadFully = (buffer: CustomBuffer): CustomBuffer => {
 		output.write(buffer.read())
 	}
 
+	output.resetOffset()
+
 	return output
 }
 

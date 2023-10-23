@@ -7,7 +7,7 @@ class Schematic {
 	width: number
 	height: number
 
-	public Schematic(
+	constructor(
 		version: number,
 		tiles: Stile[],
 		tags: Record<string, string>,

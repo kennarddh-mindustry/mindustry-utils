@@ -2,6 +2,7 @@ import { MUtf8Encoder } from 'mutf-8'
 import CustomBuffer from './CustomBuffer.js'
 import Content from './Data/Content.js'
 import Vec2 from './Data/Vec2.js'
+import Point2 from './Data/Point2.js'
 
 export const ReadString = (buffer: CustomBuffer): string => {
 	const length = buffer.read() & 0xff

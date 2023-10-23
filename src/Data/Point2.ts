@@ -19,3 +19,5 @@ class Point2 {
 		return Point2.pack(this.x, this.y)
 	}
 }
+
+export default Point2

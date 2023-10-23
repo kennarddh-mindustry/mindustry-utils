@@ -50,6 +50,28 @@ class CustomBuffer {
 		return data
 	}
 
+	readUByte(): number {
+		const data = this.#buffer.readUint8(this.#offset)
+
+		this.#offset += 1
+
+		return data
+	}
+
+	readUShort(): number {
+		const data = this.#buffer.readUint16BE(this.#offset)
+
+		this.#offset += 2
+
+		return data
+	}
+
+	readBoolean(): boolean {
+		const data = this.read()
+
+		return data != 0
+	}
+
 	write(value: number): void {
 		this.#buffer.writeInt8(value, this.#offset)
 

@@ -2,7 +2,7 @@ class CustomBuffer {
 	#offset: number = 0
 	#buffer: Buffer = Buffer.alloc(0)
 
-	get(): number {
+	read(): number {
 		const data = this.#buffer.readInt8(this.#offset)
 
 		this.#offset += 1
@@ -10,7 +10,7 @@ class CustomBuffer {
 		return data
 	}
 
-	getInt2(): number {
+	readShort(): number {
 		const data = this.#buffer.readInt16BE(this.#offset)
 
 		this.#offset += 2
@@ -18,7 +18,7 @@ class CustomBuffer {
 		return data
 	}
 
-	getInt4(): number {
+	readInt(): number {
 		const data = this.#buffer.readInt32BE(this.#offset)
 
 		this.#offset += 4
@@ -26,7 +26,7 @@ class CustomBuffer {
 		return data
 	}
 
-	getInt8(): bigint {
+	readLong(): bigint {
 		const data = this.#buffer.readBigInt64BE(this.#offset)
 
 		this.#offset += 8
@@ -34,15 +34,15 @@ class CustomBuffer {
 		return data
 	}
 
-	getFloat(): number {
+	readFloat(): number {
 		const data = this.#buffer.readFloatBE(this.#offset)
 
-		this.#offset += 8
+		this.#offset += 4
 
 		return data
 	}
 
-	getDouble(): number {
+	readDouble(): number {
 		const data = this.#buffer.readDoubleBE(this.#offset)
 
 		this.#offset += 8
@@ -56,19 +56,19 @@ class CustomBuffer {
 		this.#offset += 1
 	}
 
-	writeInt2(value: number): void {
+	writeShort(value: number): void {
 		this.#buffer.writeInt16BE(value, this.#offset)
 
 		this.#offset += 2
 	}
 
-	writeInt4(value: number): void {
+	writeInt(value: number): void {
 		this.#buffer.writeInt32BE(value, this.#offset)
 
 		this.#offset += 4
 	}
 
-	writeInt8(value: bigint): void {
+	writeLong(value: bigint): void {
 		this.#buffer.writeBigInt64BE(value, this.#offset)
 
 		this.#offset += 8
@@ -77,7 +77,7 @@ class CustomBuffer {
 	writeFloat(value: number): void {
 		this.#buffer.writeFloatBE(value, this.#offset)
 
-		this.#offset += 8
+		this.#offset += 4
 	}
 
 	writeDouble(value: number): void {

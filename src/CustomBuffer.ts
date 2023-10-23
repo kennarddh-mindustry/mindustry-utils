@@ -108,6 +108,22 @@ class CustomBuffer {
 		this.#offset += 8
 	}
 
+	writeUByte(value: number): void {
+		this.#buffer.writeUInt8(value, this.#offset)
+
+		this.#offset += 1
+	}
+
+	writeUShort(value: number): void {
+		this.#buffer.writeUInt16BE(value, this.#offset)
+
+		this.#offset += 2
+	}
+
+	writeBoolean(value: boolean): void {
+		this.write(value ? 1 : 0)
+	}
+
 	static fromBuffer(buffer: Buffer): CustomBuffer {
 		const newBuffer = CustomBuffer.alloc(buffer.length)
 

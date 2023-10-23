@@ -1,3 +1,5 @@
+import { MUtf8Decoder } from 'mutf-8'
+
 class CustomBuffer {
 	#offset: number = 0
 	#buffer: Buffer = Buffer.alloc(0)
@@ -70,6 +72,22 @@ class CustomBuffer {
 		const data = this.read()
 
 		return data != 0
+	}
+
+	readUTF(): string {
+		const length = this.readUShort()
+
+		const textBuffer: CustomBuffer = CustomBuffer.alloc(length)
+
+		for (let i = 0; i < length; i++) {
+			textBuffer.write(this.read())
+		}
+
+		const decoder = new MUtf8Decoder()
+
+		const text = decoder.decode(textBuffer.buffer)
+
+		return text
 	}
 
 	write(value: number): void {

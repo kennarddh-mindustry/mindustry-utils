@@ -34,6 +34,22 @@ class CustomBuffer {
 		return data
 	}
 
+	getFloat(): number {
+		const data = this.#buffer.readFloatBE(this.#offset)
+
+		this.#offset += 8
+
+		return data
+	}
+
+	getDouble(): number {
+		const data = this.#buffer.readDoubleBE(this.#offset)
+
+		this.#offset += 8
+
+		return data
+	}
+
 	write(value: number): void {
 		this.#buffer.writeInt8(value, this.#offset)
 
@@ -54,6 +70,18 @@ class CustomBuffer {
 
 	writeInt8(value: bigint): void {
 		this.#buffer.writeBigInt64BE(value, this.#offset)
+
+		this.#offset += 8
+	}
+
+	writeFloat(value: number): void {
+		this.#buffer.writeFloatBE(value, this.#offset)
+
+		this.#offset += 8
+	}
+
+	writeDouble(value: number): void {
+		this.#buffer.writeDoubleBE(value, this.#offset)
 
 		this.#offset += 8
 	}

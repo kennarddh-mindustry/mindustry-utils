@@ -2,8 +2,8 @@ import { Buffer } from 'node:buffer'
 import CustomBuffer from './CustomBuffer.js'
 import RequestUDP from './Utils/RequestUDP.js'
 import ParseHrtimeToSeconds from './Utils/ParseHrtimeToSeconds.js'
-import Host from './Host.js'
-import { Gamemode } from './Vars.js'
+import Host from './Data/Host.js'
+import { Gamemode } from './Data/Vars.js'
 import { ReadString } from './TypeIO.js'
 
 const PingMindustryServer = async (host: string, port: number) => {

@@ -15,7 +15,7 @@
 	},
 	"scripts": {
 		"ping": "ts-node-esm ./src/ping.ts",
-		"start": "ts-node-esm ./src/parseMSCH.ts"
+		"start": "ts-node-esm ./src/testParseMSCH.ts"
 	},
 	"keywords": [
 		"typescript"

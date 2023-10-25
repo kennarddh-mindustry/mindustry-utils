@@ -1,4 +1,4 @@
-import { MUtf8Decoder } from 'mutf-8'
+import { MUtf8Decoder, MUtf8Encoder } from 'mutf-8'
 
 class CustomBuffer {
 	#offset: number = 0
@@ -186,6 +186,24 @@ class CustomBuffer {
 		this.write(value ? 1 : 0)
 	}
 
+	writeUTF(str: string): void {
+		const encoder = new MUtf8Encoder()
+
+		const text = encoder.encode(str)
+
+		const textBuffer: CustomBuffer = CustomBuffer.fromUint8Array(text)
+
+		const length = textBuffer.length
+
+		this.writeUShort(length)
+
+		this.checkExpand(length)
+
+		for (let i = 0; i < length; i++) {
+			this.write(textBuffer.read())
+		}
+	}
+
 	static fromBuffer(buffer: Buffer): CustomBuffer {
 		const newBuffer = CustomBuffer.alloc(buffer.length)
 
@@ -194,6 +212,10 @@ class CustomBuffer {
 		newBuffer.copy(buffer)
 
 		return newBuffer
+	}
+
+	static fromUint8Array(data: Uint8Array): CustomBuffer {
+		return this.fromBuffer(Buffer.from(data))
 	}
 
 	static alloc(length: number): CustomBuffer {

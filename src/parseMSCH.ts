@@ -1,12 +1,9 @@
-import zlib from 'zlib'
-import util from 'util'
 import CustomBuffer from './CustomBuffer.js'
 import Stile from './Data/Stile.js'
 import { ReadObject } from './TypeIO.js'
 import Schematic from './Data/Schematic.js'
 import Point2 from './Data/Point2.js'
-
-const inflate = util.promisify(zlib.inflate)
+import { Inflate } from './Utils/Compression.js'
 
 const ParseMSCH = async (deflatedBuffer: CustomBuffer): Promise<Schematic> => {
 	const headerBytes = Buffer.from('msch', 'utf-8')
@@ -18,7 +15,7 @@ const ParseMSCH = async (deflatedBuffer: CustomBuffer): Promise<Schematic> => {
 
 	const version = deflatedBuffer.read()
 
-	const inflatedData = await inflate(deflatedBuffer.bufferLeft)
+	const inflatedData = await Inflate(deflatedBuffer.bufferLeft)
 
 	const buffer = CustomBuffer.fromBuffer(inflatedData)
 

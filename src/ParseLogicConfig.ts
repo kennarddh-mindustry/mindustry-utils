@@ -1,18 +1,14 @@
-import zlib from 'zlib'
-import util from 'util'
-
 import CustomBuffer from './CustomBuffer.js'
 import { ReadFully } from './TypeIO.js'
 import LogicLink from './Data/Logic/LogicLink.js'
 import LogicConfig from './Data/Logic/LogicConfig.js'
-
-const inflate = util.promisify(zlib.inflate)
+import { Inflate } from './Utils/Compression.js'
 
 const maxCodeLength = 1024 * 100
 
 const ParseLogicConfig = async (configBuffer: CustomBuffer) => {
 	const inflatedBuffer = CustomBuffer.fromBuffer(
-		await inflate(configBuffer.buffer)
+		await Inflate(configBuffer.buffer)
 	)
 
 	const version = inflatedBuffer.read()

@@ -6,7 +6,7 @@
 	"type": "module",
 	"devDependencies": {
 		"@types/node": "^20.8.7",
-		"ts-node": "^10.9.1",
+		"tsx": "^3.14.0",
 		"typescript": "^5.2.2"
 	},
 	"dependencies": {
@@ -14,8 +14,8 @@
 		"mutf-8": "^1.0.0"
 	},
 	"scripts": {
-		"ping": "ts-node-esm ./src/ping.ts",
-		"start": "ts-node-esm ./src/testParseMSCH.ts"
+		"ping": "tsx ./src/ping.ts",
+		"start": "tsx ./src/testParseMSCH.ts"
 	},
 	"keywords": [
 		"typescript"

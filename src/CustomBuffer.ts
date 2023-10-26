@@ -337,7 +337,7 @@ class CustomBuffer {
 
 	*[Symbol.iterator](): IterableIterator<Byte> {
 		for (const byte of this.buffer) {
-			yield new Byte(byte)
+			yield new Byte(byte, false)
 		}
 	}
 

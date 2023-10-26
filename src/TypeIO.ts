@@ -197,7 +197,7 @@ export const WriteObject = (buffer: CustomBuffer, object: any) => {
 		buffer.writeInt(object.length)
 
 		for (const byte of object) {
-			buffer.write(byte)
+			buffer.writeUByte(byte)
 		}
 	}
 }

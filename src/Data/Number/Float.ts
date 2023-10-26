@@ -14,6 +14,10 @@ class Float {
 	get value() {
 		return this.#value
 	}
+
+	get [Symbol.toStringTag]() {
+		return `Signed: ${this.signed}, ${this.value}`
+	}
 }
 
 export default Float

@@ -5,6 +5,7 @@ import ParseMSCH from './ParseMSCH.js'
 import fs from 'fs/promises'
 import CustomBuffer from './CustomBuffer.js'
 import ParseLogicConfig from './ParseLogicConfig.js'
+import GenerateMSCH from './GenerateMSCH.js'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
@@ -19,6 +20,17 @@ const deflatedData = Buffer.from(base64, 'base64')
 
 const schematic = await ParseMSCH(CustomBuffer.fromBuffer(deflatedData))
 
-console.log(schematic.tiles)
+// console.log(schematic.tiles)
+
+const reconstructedBuffer = await GenerateMSCH(schematic)
+
+const newBase64 = reconstructedBuffer.toString('base64')
+
+console.log(base64)
+console.log(newBase64)
+console.log(base64 === newBase64)
+
+console.log(CustomBuffer.fromBuffer(deflatedData).buffer)
+console.log(reconstructedBuffer.buffer)
 
 // console.log(await ParseLogicConfig(schematic.tiles[0].config))

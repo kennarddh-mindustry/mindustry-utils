@@ -15,9 +15,7 @@ const ParseMSCH = async (deflatedBuffer: CustomBuffer): Promise<Schematic> => {
 
 	const version = deflatedBuffer.read()
 
-	const inflatedData = await Inflate(deflatedBuffer.bufferLeft)
-
-	const buffer = CustomBuffer.fromBuffer(inflatedData)
+	const buffer = await Inflate(deflatedBuffer, false)
 
 	const width = buffer.readShort()
 	const height = buffer.readShort()

@@ -239,11 +239,11 @@ class CustomBuffer {
 
 		const length = textBuffer.length
 
-		this.writeUShort(new Short(length, false))
+		this.writeUShort(new Short(length.value, false))
 
-		this.checkExpand(length)
+		this.checkExpand(length.value)
 
-		for (let i = 0; i < length; i++) {
+		for (let i = 0; i < length.value; i++) {
 			this.write(textBuffer.read())
 		}
 	}
@@ -311,28 +311,40 @@ class CustomBuffer {
 		return this.#buffer.toString(encoding)
 	}
 
-	get offset(): number {
-		return this.#offset
+	get offset(): Int {
+		return new Int(this.#offset)
 	}
 
 	get bufferLeft(): Buffer {
-		return this.#buffer.subarray(this.#offset)
+		return this.#buffer.subarray(this.#offset, this.#length)
 	}
 
 	get buffer(): Buffer {
-		return this.#buffer
+		return this.#buffer.subarray(0, this.#length)
 	}
 
-	get capacity(): number {
-		return this.#capacity
+	get capacity(): Int {
+		return new Int(this.#capacity)
 	}
 
-	get length(): number {
-		return this.#length
+	get length(): Int {
+		return new Int(this.#length)
 	}
 
 	resetOffset(): void {
 		this.#offset = 0
+	}
+
+	*[Symbol.iterator](): IterableIterator<Byte> {
+		for (const byte of this.buffer) {
+			yield new Byte(byte)
+		}
+	}
+
+	static concat(...buffers: CustomBuffer[]): CustomBuffer {
+		return CustomBuffer.fromBuffer(
+			Buffer.concat(buffers.map(customBuffer => customBuffer.buffer))
+		)
 	}
 }
 

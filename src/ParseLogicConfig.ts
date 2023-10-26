@@ -7,9 +7,7 @@ import { Inflate } from './Utils/Compression.js'
 const maxCodeLength = 1024 * 100
 
 const ParseLogicConfig = async (configBuffer: CustomBuffer) => {
-	const inflatedBuffer = CustomBuffer.fromBuffer(
-		await Inflate(configBuffer.buffer)
-	)
+	const inflatedBuffer = await Inflate(configBuffer)
 
 	const version = inflatedBuffer.read()
 
@@ -17,7 +15,7 @@ const ParseLogicConfig = async (configBuffer: CustomBuffer) => {
 
 	const codeLength = codeBuffer.length
 
-	if (codeLength > maxCodeLength)
+	if (codeLength.value > maxCodeLength)
 		throw new Error(`Malformed logic data! Length: ${codeLength}`)
 
 	const codeText = codeBuffer.toString('utf-8')

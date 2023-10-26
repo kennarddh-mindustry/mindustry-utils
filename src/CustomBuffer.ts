@@ -116,6 +116,20 @@ class CustomBuffer {
 		return text
 	}
 
+	readString(): string {
+		const length = this.read().value & 0xff
+
+		const stringBuffer = CustomBuffer.alloc(length)
+
+		for (let i = 0; i < length; i++) {
+			const data = this.read()
+
+			stringBuffer.write(data)
+		}
+
+		return stringBuffer.toString('utf-8')
+	}
+
 	write(value: Byte): void {
 		if (!value.signed)
 			throw new Error('Cannot write unsigned byte to signed')

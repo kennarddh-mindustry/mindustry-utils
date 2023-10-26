@@ -7,33 +7,6 @@ import Int from './Data/Number/Int.js'
 import Byte from './Data/Number/Byte.js'
 import Short from './Data/Number/Short.js'
 
-export const ReadString = (buffer: CustomBuffer): string => {
-	const length = buffer.read().value & 0xff
-
-	const stringBuffer = CustomBuffer.alloc(length)
-
-	for (let i = 0; i < length; i++) {
-		const data = buffer.read()
-
-		stringBuffer.write(data)
-	}
-
-	return stringBuffer.toString('utf-8')
-}
-
-export const WriteString = (buffer: CustomBuffer, string: string) => {
-	buffer.write(new Byte(1))
-
-	const encoder = new MUtf8Encoder()
-	const encoded = encoder.encode(string)
-
-	buffer.writeShort(new Short(encoded.length))
-
-	for (const byte of encoded) {
-		buffer.writeInt(new Int(byte))
-	}
-}
-
 export const ReadInts = (buffer: CustomBuffer): Int[] => {
 	const length = buffer.readShort().value
 
@@ -109,7 +82,7 @@ export const ReadObject = (buffer: CustomBuffer) => {
 		case 3:
 			return buffer.readFloat()
 		case 4:
-			return ReadString(buffer)
+			return buffer.readString()
 		case 5:
 			return new Content(buffer.read(), buffer.readShort())
 		case 6:

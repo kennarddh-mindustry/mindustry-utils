@@ -4,7 +4,6 @@ import RequestUDP from './Utils/RequestUDP.js'
 import ParseHrtimeToSeconds from './Utils/ParseHrtimeToSeconds.js'
 import Host from './Data/Host.js'
 import { Gamemode } from './Data/Vars.js'
-import { ReadString } from './TypeIO.js'
 
 const PingMindustryServer = async (host: string, port: number) => {
 	const pingMessage = CustomBuffer.fromBuffer(Buffer.from([-2, 1]))
@@ -16,16 +15,16 @@ const PingMindustryServer = async (host: string, port: number) => {
 	const pingDuration = process.hrtime(startPing)
 	const ping = ParseHrtimeToSeconds(pingDuration)
 
-	const name = ReadString(response)
-	const map = ReadString(response)
+	const name = response.readString()
+	const map = response.readString()
 	const players = response.readInt()
 	const wave = response.readInt()
 	const version = response.readInt()
-	const verType = ReadString(response)
+	const verType = response.readString()
 	const gamemode = response.read().value as Gamemode
 	const limit = response.readInt()
-	const description = ReadString(response)
-	const modeName = ReadString(response)
+	const description = response.readString()
+	const modeName = response.readString()
 
 	return new Host(
 		ping,

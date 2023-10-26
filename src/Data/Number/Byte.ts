@@ -2,7 +2,7 @@ class Byte {
 	#signed: boolean
 	#value: number
 
-	constructor(signed: boolean, value: number) {
+	constructor(value: number, signed: boolean = true) {
 		this.#signed = signed
 		this.#value = value
 	}

@@ -3,9 +3,12 @@ import CustomBuffer from './CustomBuffer.js'
 import Content from './Data/Content.js'
 import Vec2 from './Data/Vec2.js'
 import Point2 from './Data/Point2.js'
+import Int from './Data/Number/Int.js'
+import Byte from './Data/Number/Byte.js'
+import Short from './Data/Number/Short.js'
 
 export const ReadString = (buffer: CustomBuffer): string => {
-	const length = buffer.read() & 0xff
+	const length = buffer.read().value & 0xff
 
 	const stringBuffer = CustomBuffer.alloc(length)
 
@@ -19,22 +22,22 @@ export const ReadString = (buffer: CustomBuffer): string => {
 }
 
 export const WriteString = (buffer: CustomBuffer, string: string) => {
-	buffer.write(1)
+	buffer.write(new Byte(1))
 
 	const encoder = new MUtf8Encoder()
 	const encoded = encoder.encode(string)
 
-	buffer.writeShort(encoded.length)
+	buffer.writeShort(new Short(encoded.length))
 
 	for (const byte of encoded) {
-		buffer.writeInt(byte)
+		buffer.writeInt(new Int(byte))
 	}
 }
 
-export const ReadInts = (buffer: CustomBuffer): number[] => {
-	const length = buffer.readShort()
+export const ReadInts = (buffer: CustomBuffer): Int[] => {
+	const length = buffer.readShort().value
 
-	const output: number[] = []
+	const output: Int[] = []
 
 	for (let i = 0; i < length; i++) {
 		output.push(buffer.readInt())
@@ -44,7 +47,7 @@ export const ReadInts = (buffer: CustomBuffer): number[] => {
 }
 
 export const ReadPoint2s = (buffer: CustomBuffer): Point2[] => {
-	const length = buffer.read()
+	const length = buffer.read().value
 
 	const output: Point2[] = []
 
@@ -56,7 +59,7 @@ export const ReadPoint2s = (buffer: CustomBuffer): Point2[] => {
 }
 
 export const ReadFully = (buffer: CustomBuffer): CustomBuffer => {
-	const length = buffer.readInt()
+	const length = buffer.readInt().value
 
 	const output = CustomBuffer.alloc(length)
 
@@ -70,7 +73,7 @@ export const ReadFully = (buffer: CustomBuffer): CustomBuffer => {
 }
 
 export const ReadBooleans = (buffer: CustomBuffer): boolean[] => {
-	const length = buffer.readInt()
+	const length = buffer.readInt().value
 
 	const output: boolean[] = []
 
@@ -82,7 +85,7 @@ export const ReadBooleans = (buffer: CustomBuffer): boolean[] => {
 }
 
 export const ReadVec2s = (buffer: CustomBuffer): Vec2[] => {
-	const length = buffer.readShort()
+	const length = buffer.readShort().value
 
 	const output: Vec2[] = []
 
@@ -96,7 +99,7 @@ export const ReadVec2s = (buffer: CustomBuffer): Vec2[] => {
 export const ReadObject = (buffer: CustomBuffer) => {
 	const type = buffer.read()
 
-	switch (type) {
+	switch (type.value) {
 		case 0:
 			return null
 		case 1:

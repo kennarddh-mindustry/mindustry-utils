@@ -1,8 +1,10 @@
-class Vec2 {
-	x: number
-	y: number
+import Float from "./Number/Float"
 
-	constructor(x: number, y: number) {
+class Vec2 {
+	x: Float
+	y: Float
+
+	constructor(x: Float, y: Float) {
 		this.x = x
 		this.y = y
 	}

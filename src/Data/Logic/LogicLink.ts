@@ -1,9 +1,11 @@
+import Short from '../Number/Short'
+
 class LogicLink {
-	x: number
-	y: number
+	x: Short
+	y: Short
 	name: string
 
-	constructor(x: number, y: number, name: string) {
+	constructor(x: Short, y: Short, name: string) {
 		this.x = x
 		this.y = y
 		this.name = name

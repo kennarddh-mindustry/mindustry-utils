@@ -1,18 +1,20 @@
-class Point2 {
-	x: number
-	y: number
+import Int from "./Number/Int"
 
-	constructor(x: number, y: number) {
+class Point2 {
+	x: Int
+	y: Int
+
+	constructor(x: Int, y: Int) {
 		this.x = x
 		this.y = y
 	}
 
-	static unpack(packed: number): Point2 {
-		return new Point2(packed >>> 16, packed & 0xffff)
+	static unpack(packed: Int): Point2 {
+		return new Point2(new Int(packed.value >>> 16), new Int(packed.value & 0xffff))
 	}
 
-	static pack(x: number, y: number): number {
-		return (x << 16) | (y & 0xffff)
+	static pack(x: Int, y: Int): Int {
+		return new Int((x.value << 16) | (y.value & 0xffff))
 	}
 
 	pack() {

@@ -1,8 +1,11 @@
-class Content {
-	type: number
-	id: number
+import Byte from './Number/Byte'
+import Short from './Number/Short'
 
-	constructor(type: number, id: number) {
+class Content {
+	type: Byte
+	id: Short
+
+	constructor(type: Byte, id: Short) {
 		this.type = type
 		this.id = id
 	}

@@ -22,7 +22,7 @@ const PingMindustryServer = async (host: string, port: number) => {
 	const wave = response.readInt()
 	const version = response.readInt()
 	const verType = ReadString(response)
-	const gamemode = response.read() as Gamemode
+	const gamemode = response.read().value as Gamemode
 	const limit = response.readInt()
 	const description = ReadString(response)
 	const modeName = ReadString(response)

@@ -26,7 +26,7 @@ const ParseLogicConfig = async (configBuffer: CustomBuffer) => {
 
 	const links: LogicLink[] = []
 
-	for (let i = 0; i < linksLength; i++) {
+	for (let i = 0; i < linksLength.value; i++) {
 		const linkName = inflatedBuffer.readUTF()
 		const x = inflatedBuffer.readShort()
 		const y = inflatedBuffer.readShort()

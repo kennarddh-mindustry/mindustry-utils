@@ -1,15 +1,16 @@
+import Int from './Number/Int.js'
 import { Gamemode } from './Vars.js'
 
 class Host {
 	ping: number
 	name: string
 	address: string
-	players: number
+	players: Int
 	mapname: string
-	wave: number
-	version: number
+	wave: Int
+	version: Int
 	versionType: string
-	playerLimit: number
+	playerLimit: Int
 	gamemode: Gamemode
 	description: string
 	modeName: string
@@ -18,12 +19,12 @@ class Host {
 		ping: number,
 		name: string,
 		address: string,
-		players: number,
+		players: Int,
 		mapname: string,
-		wave: number,
-		version: number,
+		wave: Int,
+		version: Int,
 		versionType: string,
-		playerLimit: number,
+		playerLimit: Int,
 		gamemode: Gamemode,
 		description: string,
 		modeName: string

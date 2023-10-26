@@ -1,18 +1,20 @@
+import Byte from './Number/Byte'
+import Short from './Number/Short'
 import Stile from './Stile'
 
 class Schematic {
-	version: number
+	version: Byte
 	tiles: Stile[]
 	tags: Record<string, string>
-	width: number
-	height: number
+	width: Short
+	height: Short
 
 	constructor(
-		version: number,
+		version: Byte,
 		tiles: Stile[],
 		tags: Record<string, string>,
-		width: number,
-		height: number
+		width: Short,
+		height: Short
 	) {
 		this.version = version
 		this.tiles = tiles

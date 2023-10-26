@@ -1,4 +1,10 @@
 import { MUtf8Decoder, MUtf8Encoder } from 'mutf-8'
+import Short from './Data/Number/Short'
+import Byte from './Data/Number/Byte'
+import Double from './Data/Number/Double'
+import Float from './Data/Number/Float'
+import Long from './Data/Number/Long'
+import Int from './Data/Number/Int'
 
 class CustomBuffer {
 	#offset: number = 0
@@ -6,94 +12,94 @@ class CustomBuffer {
 	#buffer: Buffer = Buffer.alloc(0)
 	#capacity: number = 0
 
-	read(): number {
+	read(): Byte {
 		this.checkCanRead(1)
 
 		const data = this.#buffer.readInt8(this.#offset)
 
 		this.#offset += 1
 
-		return data
+		return new Byte(data)
 	}
 
-	readShort(): number {
+	readShort(): Short {
 		this.checkCanRead(2)
 
 		const data = this.#buffer.readInt16BE(this.#offset)
 
 		this.#offset += 2
 
-		return data
+		return new Short(data)
 	}
 
-	readInt(): number {
+	readInt(): Int {
 		this.checkCanRead(4)
 
 		const data = this.#buffer.readInt32BE(this.#offset)
 
 		this.#offset += 4
 
-		return data
+		return new Int(data)
 	}
 
-	readLong(): bigint {
+	readLong(): Long {
 		this.checkCanRead(8)
 
 		const data = this.#buffer.readBigInt64BE(this.#offset)
 
 		this.#offset += 8
 
-		return data
+		return new Long(data)
 	}
 
-	readFloat(): number {
+	readFloat(): Float {
 		this.checkCanRead(4)
 
 		const data = this.#buffer.readFloatBE(this.#offset)
 
 		this.#offset += 4
 
-		return data
+		return new Float(data)
 	}
 
-	readDouble(): number {
+	readDouble(): Double {
 		this.checkCanRead(8)
 
 		const data = this.#buffer.readDoubleBE(this.#offset)
 
 		this.#offset += 8
 
-		return data
+		return new Double(data)
 	}
 
-	readUByte(): number {
+	readUByte(): Byte {
 		this.checkCanRead(1)
 
 		const data = this.#buffer.readUint8(this.#offset)
 
 		this.#offset += 1
 
-		return data
+		return new Byte(data, false)
 	}
 
-	readUShort(): number {
+	readUShort(): Short {
 		this.checkCanRead(2)
 
 		const data = this.#buffer.readUint16BE(this.#offset)
 
 		this.#offset += 2
 
-		return data
+		return new Short(data, false)
 	}
 
 	readBoolean(): boolean {
 		const data = this.read()
 
-		return data != 0
+		return data.value != 0
 	}
 
 	readUTF(): string {
-		const length = this.readUShort()
+		const length = this.readUShort().value
 
 		const textBuffer: CustomBuffer = CustomBuffer.alloc(length)
 
@@ -110,80 +116,104 @@ class CustomBuffer {
 		return text
 	}
 
-	write(value: number): void {
+	write(value: Byte): void {
+		if (!value.signed)
+			throw new Error('Cannot write unsigned byte to signed')
+
 		this.checkExpand(1)
 
-		this.#buffer.writeInt8(value, this.#offset)
+		this.#buffer.writeInt8(value.value, this.#offset)
 
 		this.#offset += 1
 		this.#length += 1
 	}
 
-	writeShort(value: number): void {
+	writeShort(value: Short): void {
+		if (!value.signed)
+			throw new Error('Cannot write unsigned short to signed')
+
 		this.checkExpand(2)
 
-		this.#buffer.writeInt16BE(value, this.#offset)
+		this.#buffer.writeInt16BE(value.value, this.#offset)
 
 		this.#offset += 2
 		this.#length += 2
 	}
 
-	writeInt(value: number): void {
+	writeInt(value: Int): void {
+		if (!value.signed)
+			throw new Error('Cannot write unsigned int to signed')
+
 		this.checkExpand(4)
 
-		this.#buffer.writeInt32BE(value, this.#offset)
+		this.#buffer.writeInt32BE(value.value, this.#offset)
 
 		this.#offset += 4
 		this.#length += 4
 	}
 
-	writeLong(value: bigint): void {
+	writeLong(value: Long): void {
+		if (!value.signed)
+			throw new Error('Cannot write unsigned long to signed')
+
 		this.checkExpand(8)
 
-		this.#buffer.writeBigInt64BE(value, this.#offset)
+		this.#buffer.writeBigInt64BE(value.value, this.#offset)
 
 		this.#offset += 8
 		this.#length += 8
 	}
 
-	writeFloat(value: number): void {
+	writeFloat(value: Float): void {
+		if (!value.signed)
+			throw new Error('Cannot write unsigned float to signed')
+
 		this.checkExpand(4)
 
-		this.#buffer.writeFloatBE(value, this.#offset)
+		this.#buffer.writeFloatBE(value.value, this.#offset)
 
 		this.#offset += 4
 		this.#length += 4
 	}
 
-	writeDouble(value: number): void {
+	writeDouble(value: Double): void {
+		if (!value.signed)
+			throw new Error('Cannot write unsigned double to signed')
+
 		this.checkExpand(8)
 
-		this.#buffer.writeDoubleBE(value, this.#offset)
+		this.#buffer.writeDoubleBE(value.value, this.#offset)
 
 		this.#offset += 8
 		this.#length += 8
 	}
 
-	writeUByte(value: number): void {
+	writeUByte(value: Byte): void {
+		if (value.signed)
+			throw new Error('Cannot write signed byte to unsigned')
+
 		this.checkExpand(1)
 
-		this.#buffer.writeUInt8(value, this.#offset)
+		this.#buffer.writeUInt8(value.value, this.#offset)
 
 		this.#offset += 1
 		this.#length += 1
 	}
 
-	writeUShort(value: number): void {
+	writeUShort(value: Short): void {
+		if (value.signed)
+			throw new Error('Cannot write signed short to unsigned')
+
 		this.checkExpand(2)
 
-		this.#buffer.writeUInt16BE(value, this.#offset)
+		this.#buffer.writeUInt16BE(value.value, this.#offset)
 
 		this.#offset += 2
 		this.#length += 2
 	}
 
 	writeBoolean(value: boolean): void {
-		this.write(value ? 1 : 0)
+		this.write(value ? new Byte(1) : new Byte(0))
 	}
 
 	writeUTF(str: string): void {
@@ -195,7 +225,7 @@ class CustomBuffer {
 
 		const length = textBuffer.length
 
-		this.writeUShort(length)
+		this.writeUShort(new Short(length, false))
 
 		this.checkExpand(length)
 

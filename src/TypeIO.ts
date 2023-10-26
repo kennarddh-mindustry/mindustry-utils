@@ -103,26 +103,27 @@ export const ReadObject = (buffer: CustomBuffer) => {
 			return buffer.readShort()
 		case 14:
 			return ReadFully(buffer)
-		case 15:
-			buffer.read()
+		// Unit commands
+		// case 15:
+		// 	buffer.read()
 
-			return null
-		case 16:
-			return ReadBooleans(buffer)
-		case 17:
-			return buffer.readInt()
-		case 18:
-			return ReadVec2s(buffer)
-		case 19:
-			return new Vec2(buffer.readFloat(), buffer.readFloat())
-		case 20:
-			return buffer.readUByte()
-		case 21:
-			return ReadInts(buffer)
-		case 22:
-			throw new Error('Object with type 22 is not implemented')
-		case 23:
-			return buffer.readUShort()
+		// 	return null
+		// case 16:
+		// 	return ReadBooleans(buffer)
+		// case 17:
+		// 	return buffer.readInt()
+		// case 18:
+		// 	return ReadVec2s(buffer)
+		// case 19:
+		// 	return new Vec2(buffer.readFloat(), buffer.readFloat())
+		// case 20:
+		// 	return buffer.readUByte()
+		// case 21:
+		// 	return ReadInts(buffer)
+		// case 22:
+		// 	throw new Error('Object with type 22 is not implemented')
+		// case 23:
+		// 	return buffer.readUShort()
 		default:
 			throw new Error(`Object with type ${type} is unknown`)
 	}

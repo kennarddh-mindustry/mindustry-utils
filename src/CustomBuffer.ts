@@ -219,8 +219,8 @@ class CustomBuffer {
 	}
 
 	static alloc(length: number): CustomBuffer {
-		if (length <= 0)
-			throw Error('Cannot allocate buffer with less than 1 length')
+		if (length < 0)
+			throw Error('Cannot allocate buffer with less than 0 length')
 
 		const newBuffer = new CustomBuffer()
 
@@ -233,6 +233,8 @@ class CustomBuffer {
 	}
 
 	expand(requiredEmptyLength: number) {
+		if (this.#capacity == 0) this.#capacity = 1
+
 		while (this.#capacity - this.#offset < requiredEmptyLength)
 			this.#capacity *= 2
 

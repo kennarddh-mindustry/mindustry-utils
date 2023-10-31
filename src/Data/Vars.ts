@@ -24,3 +24,22 @@ export enum SorterID {
 	BlastCompound = 14,
 	Pyratite = 15,
 }
+
+export const SorterIDToColor = {
+	[SorterID.Copper] : '##d99d73',
+	[SorterID.Lead] : '#8c7fa9',
+	[SorterID.Metaglass] : '#ebeef5',
+	[SorterID.Graphite] : '#b2c6d2',
+	[SorterID.Sand] : '#f7cba4',
+	[SorterID.Coal] : '#272727',
+	[SorterID.Titanium] : '#8da1e3',
+	[SorterID.Thorium] : '#f9a3c7',
+	[SorterID.Scrap] : '#777777',
+	[SorterID.Silicon] : '#53565c',
+	[SorterID.Plastanium] : '#cbd97f',
+	[SorterID.PhaseFabric] : '#f4ba6e',
+	[SorterID.SurgeAlloy] : '#f3e979',
+	[SorterID.SporePod] : '#7457ce',
+	[SorterID.BlastCompound] : '#ff795e',
+	[SorterID.Pyratite] : '#ffaa5f',
+}as const

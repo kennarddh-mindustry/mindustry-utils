@@ -57,7 +57,7 @@ const GenerateMSCH = async (schematic: Schematic): Promise<CustomBuffer> => {
 		inflatedBuffer.writeUTF(block[0])
 	}
 
-	const total = schematic.width.value * schematic.height.value
+	const total = schematic.tiles.length
 
 	if (total > 128 * 128)
 		throw new Error('Invalid schematic: Too many blocks.')

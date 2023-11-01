@@ -36,7 +36,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 // console.log(schematic.tiles)
 
-const art = await loadImage(path.join(__dirname, '../data/bread.png'))
+const art = await loadImage(path.join(__dirname, '../data/omus.png'))
 
 const [canvas, ditherCanvas] = await GenerateSorterArtImage({
 	art,
@@ -48,7 +48,7 @@ const [canvas, ditherCanvas] = await GenerateSorterArtImage({
 const schematicBuffer = await GenerateSorterArt({
 	canvas,
 	schematicTags: {
-		name: 'Pixel Art Dithered',
+		name: 'Pixel Art Normal',
 		labels: '["Pixel Art","Normal"]',
 	},
 })

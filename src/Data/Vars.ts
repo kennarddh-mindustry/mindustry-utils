@@ -26,7 +26,7 @@ export enum SorterID {
 }
 
 export const SorterIDToColor = {
-	[SorterID.Copper] : '##d99d73',
+	[SorterID.Copper] : '#d99d73',
 	[SorterID.Lead] : '#8c7fa9',
 	[SorterID.Metaglass] : '#ebeef5',
 	[SorterID.Graphite] : '#b2c6d2',

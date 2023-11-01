@@ -1,6 +1,6 @@
-type RGBColor = { r: number; g: number; b: number }
+export type RGBColor = { r: number; g: number; b: number }
 
-const hexToRgb = (hex: string): RGBColor => {
+const HexToRgb = (hex: string): RGBColor => {
 	const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
 
 	const normalizedHex = hex.replace(
@@ -21,19 +21,31 @@ const hexToRgb = (hex: string): RGBColor => {
 		: null
 }
 
-const RGBDistance = (a: RGBColor, b: RGBColor): number =>
-	Math.sqrt(
-		Math.pow(a.r - b.r, 2) + Math.pow(a.g - b.g, 2) + Math.pow(a.b - b.b, 2)
-	)
+/**
+ * 0 means opposite colors, 1 means same colors
+ */
+const RGBDelta = (color1: RGBColor, color2: RGBColor): number => {
+	let r = 255 - Math.abs(color1.r - color2.r)
+	let g = 255 - Math.abs(color1.g - color2.g)
+	let b = 255 - Math.abs(color1.b - color2.b)
 
-const NearestColor = (colors: string[], colorHex: string): string => {
-	let lowest = Number.POSITIVE_INFINITY
+	r /= 255
+	g /= 255
+	b /= 255
+
+	return (r + g + b) / 3
+}
+
+const NearestColor = (colors: string[], color: RGBColor): string => {
+	let highest = Number.NEGATIVE_INFINITY
 	let index = 0
 
 	colors.forEach((el, i) => {
-		const distance = RGBDistance(hexToRgb(colorHex), hexToRgb(el))
-		if (distance < lowest) {
-			lowest = distance
+		const delta = RGBDelta(color, HexToRgb(el))
+
+		if (delta > highest) {
+			highest = delta
+
 			index = i
 		}
 	})

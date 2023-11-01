@@ -41,7 +41,7 @@ const [schematicBuffer, canvas] = await GenerateSorterArt({
 	art,
 	width: 100,
 	height: 100,
-	ditherOpacity: 0.05,
+	ditherOpacity: 0.95,
 })
 
 const base64 = schematicBuffer.toString('base64')

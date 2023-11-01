@@ -80,7 +80,7 @@ const GenerateSorterArt = async ({
 		newDitheredDataArray[i] = red
 		newDitheredDataArray[i + 1] = green
 		newDitheredDataArray[i + 2] = blue
-		newDitheredDataArray[i + 3] = alpha - 255 * (1 - ditherOpacity)
+		newDitheredDataArray[i + 3] = alpha - 255 * ditherOpacity
 	}
 
 	const newDitheredData = new ImageData(newDitheredDataArray, width, height)

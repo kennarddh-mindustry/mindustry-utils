@@ -34,7 +34,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 // console.log(schematic.tiles)
 
 const art = await loadImage(
-	path.join(__dirname, '../data/anuke.png')
+	path.join(__dirname, '../data/anuke2.png')
 )
 
 const width = 100

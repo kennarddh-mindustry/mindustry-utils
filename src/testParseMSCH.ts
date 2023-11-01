@@ -86,7 +86,7 @@ for (let i = 0; i < ditheredData.length; i += 4) {
 	newDitheredDataArray[i] = red
 	newDitheredDataArray[i + 1] = green
 	newDitheredDataArray[i + 2] = blue
-	newDitheredDataArray[i + 3] = alpha - 255 * 0.9
+	newDitheredDataArray[i + 3] = alpha - 255 * 0.95
 }
 
 const newDitheredData = new ImageData(newDitheredDataArray, width, height)

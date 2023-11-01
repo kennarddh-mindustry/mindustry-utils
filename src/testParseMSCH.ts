@@ -6,7 +6,7 @@ import fs from 'fs/promises'
 import CustomBuffer from './CustomBuffer.js'
 import ParseLogicConfig from './ParseLogicConfig.js'
 import GenerateMSCH from './GenerateMSCH.js'
-import { createCanvas, loadImage } from 'canvas'
+import { createCanvas, loadImage, ImageData, Image } from 'canvas'
 import Stile from './Data/Stile.js'
 import Point2 from './Data/Point2.js'
 import Byte from './Data/Number/Byte.js'
@@ -17,6 +17,7 @@ import { SorterID, SorterIDToColor } from './Data/Vars.js'
 import Schematic from './Data/Schematic.js'
 import NearestColor, { RGBColor } from './Utils/NearestColor.js'
 import * as iq from 'image-q'
+import Dither from 'canvas-dither'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
@@ -33,9 +34,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 // console.log(schematic.tiles)
 
-const art = await loadImage(
-	path.join(__dirname, '../data/anuke2.png')
-)
+const art = await loadImage(path.join(__dirname, '../data/roach.png'))
 
 const width = 100
 const height = 100
@@ -62,7 +61,44 @@ const outPointContainer = await iq.applyPalette(pointContainer, palette, {
 	imageQuantization: 'floyd-steinberg', // optional
 })
 
-const data = outPointContainer.toUint8Array()
+const imageData = outPointContainer.toUint8Array()
+
+ctx.putImageData(
+	new ImageData(new Uint8ClampedArray(imageData), width, height),
+	0,
+	0
+)
+
+const ditheredImage: ImageData = Dither.atkinson(
+	new ImageData(ctx.getImageData(0, 0, width, height).data, width, height)
+)
+
+const ditheredData = ditheredImage.data
+
+const newDitheredDataArray = new Uint8ClampedArray(ditheredData.length)
+
+for (let i = 0; i < ditheredData.length; i += 4) {
+	const red = ditheredData[i]
+	const green = ditheredData[i + 1]
+	const blue = ditheredData[i + 2]
+	const alpha = ditheredData[i + 3]
+
+	newDitheredDataArray[i] = red
+	newDitheredDataArray[i + 1] = green
+	newDitheredDataArray[i + 2] = blue
+	newDitheredDataArray[i + 3] = alpha - 255 * 0.9
+}
+
+const newDitheredData = new ImageData(newDitheredDataArray, width, height)
+
+const newDitherCanvas = createCanvas(width, height)
+const newDitherCtx = newDitherCanvas.getContext('2d')
+
+newDitherCtx.putImageData(newDitheredData, 0, 0)
+
+ctx.drawImage(newDitherCanvas, 0, 0)
+
+const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data
 
 const tiles: Stile[] = []
 

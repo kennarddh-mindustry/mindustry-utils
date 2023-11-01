@@ -35,9 +35,9 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 // console.log(schematic.tiles)
 
-const art = await loadImage(path.join(__dirname, '../data/kohlrabi.png'))
+const art = await loadImage(path.join(__dirname, '../data/anuke2.png'))
 
-const [schematicBuffer, canvas] = await GenerateSorterArt({
+const [schematicBuffer, canvas, ditherCanvas] = await GenerateSorterArt({
 	art,
 	width: 100,
 	height: 100,
@@ -49,6 +49,10 @@ const base64 = schematicBuffer.toString('base64')
 await fs.writeFile(
 	path.join(__dirname, '../data/output.png'),
 	canvas.toBuffer('image/png')
+)
+await fs.writeFile(
+	path.join(__dirname, '../data/output-dithered.png'),
+	ditherCanvas.toBuffer('image/png')
 )
 
 await fs.writeFile(path.join(__dirname, '../data/output.txt'), base64)

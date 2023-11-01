@@ -29,7 +29,7 @@ const GenerateSorterArt = async ({
 	height: number
 	ditherOpacity: number
 	schematicTags: Record<string, string>
-}>): Promise<[CustomBuffer, Canvas]> => {
+}>): Promise<[CustomBuffer, Canvas, Canvas]> => {
 	const canvas = createCanvas(width, height)
 	const ctx = canvas.getContext('2d')
 
@@ -152,7 +152,12 @@ const GenerateSorterArt = async ({
 
 	const schematicBuffer = await GenerateMSCH(schematic)
 
-	return [schematicBuffer, canvas]
+	const ditherCanvas = createCanvas(width, height)
+	const ditherCtx = ditherCanvas.getContext('2d')
+
+	ditherCtx.putImageData(ditheredImage, 0, 0)
+
+	return [schematicBuffer, canvas, ditherCanvas]
 }
 
 export default GenerateSorterArt

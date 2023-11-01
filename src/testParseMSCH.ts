@@ -19,6 +19,7 @@ import NearestColor, { RGBColor } from './Utils/NearestColor.js'
 import * as iq from 'image-q'
 import Dither from 'canvas-dither'
 import GenerateSorterArt from './GenerateSorterArt.js'
+import GenerateSorterArtImage from './GenerateSorterArtImage.js'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
@@ -35,16 +36,34 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 // console.log(schematic.tiles)
 
-const art = await loadImage(path.join(__dirname, '../data/anuke2.png'))
+const art = await loadImage(path.join(__dirname, '../data/TransparentImage.png'))
 
-const [schematicBuffer, canvas, ditherCanvas] = await GenerateSorterArt({
+const [canvas, ditherCanvas] = await GenerateSorterArtImage({
 	art,
 	width: 100,
 	height: 100,
 	ditherOpacity: 0.05,
 })
 
-const base64 = schematicBuffer.toString('base64')
+const schematicBuffer = await GenerateSorterArt({
+	canvas,
+	schematicTags: {
+		name: 'Pixel Art Dithered',
+		labels: '["Pixel Art","Normal"]',
+	},
+})
+
+const schematicBase64 = schematicBuffer.toString('base64')
+
+const schematicDitherBuffer = await GenerateSorterArt({
+	canvas: ditherCanvas,
+	schematicTags: {
+		name: 'Pixel Art Dithered',
+		labels: '["Pixel Art","Dither"]',
+	},
+})
+
+const schematicDitherBase64 = schematicDitherBuffer.toString('base64')
 
 await fs.writeFile(
 	path.join(__dirname, '../data/output.png'),
@@ -55,4 +74,8 @@ await fs.writeFile(
 	ditherCanvas.toBuffer('image/png')
 )
 
-await fs.writeFile(path.join(__dirname, '../data/output.txt'), base64)
+await fs.writeFile(path.join(__dirname, '../data/output.txt'), schematicBase64)
+await fs.writeFile(
+	path.join(__dirname, '../data/output-dither.txt'),
+	schematicDitherBase64
+)

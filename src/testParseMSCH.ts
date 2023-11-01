@@ -16,6 +16,7 @@ import Short from './Data/Number/Short.js'
 import { SorterID, SorterIDToColor } from './Data/Vars.js'
 import Schematic from './Data/Schematic.js'
 import NearestColor, { RGBColor } from './Utils/NearestColor.js'
+import * as iq from 'image-q'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
@@ -24,18 +25,20 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 // )
 
 // const base64 =
-// 	'bXNjaAF4nD3MQQ7CMAwEwHWSpqWceAgvQhxC8SFSm6DEVOL3uEbCp1lba8wgj1DSxgjCXXB+cl9afkmuBUBc04PXDne7e0xLLTt/akPstQk3XCRLKvm9Xf8nYIYNEQgYjHCmY+NNThVMXjWYgiriFwijKaom06id0/HrC/5OGSQ='
+// 	'bXNjaAF4nEXJSwqAMAwE0NHWVnDj/cSFnywK/mhyf7QOaAKZMA8tvIM/pl0QTVTNDN0quuR0WToPAGGbZtkU9TBWCHpmk/zUPf6py6mefcN9VYn3cTRH8zRPa2gNLdACLdJisRubug+/'
 
 // const deflatedData = Buffer.from(base64, 'base64')
 
 // const schematic = await ParseMSCH(CustomBuffer.fromBuffer(deflatedData))
 
-// console.log(schematic)
+// console.log(schematic.tiles)
 
-const art = await loadImage(path.join(__dirname, '../data/image.png'))
+const art = await loadImage(
+	path.join(__dirname, '../data/TransparentImage.png')
+)
 
-const width = 20
-const height = 20
+const width = 100
+const height = 100
 
 const canvas = createCanvas(width, height)
 const ctx = canvas.getContext('2d')
@@ -43,7 +46,23 @@ const ctx = canvas.getContext('2d')
 ctx.drawImage(art, 0, 0, width, height)
 
 const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-const data = imgData.data
+
+const pointContainer = iq.utils.PointContainer.fromUint8Array(
+	imgData.data,
+	width,
+	height
+)
+
+const palette = await iq.buildPalette([pointContainer], {
+	colors: Object.keys(SorterID).length,
+})
+
+const outPointContainer = await iq.applyPalette(pointContainer, palette, {
+	colorDistanceFormula: 'euclidean', // optional
+	imageQuantization: 'floyd-steinberg', // optional
+})
+
+const data = outPointContainer.toUint8Array()
 
 const tiles: Stile[] = []
 
@@ -55,7 +74,11 @@ for (let i = 0; i < data.length; i += 4) {
 	const blue = data[i + 2]
 	const alpha = data[i + 3]
 
-	if (alpha < 127) continue
+	if (alpha < 127) {
+		pixelCounter += 1
+
+		continue
+	}
 
 	const rgb: RGBColor = {
 		r: red,
@@ -102,9 +125,11 @@ const schematic = new Schematic(
 const schemBuffer = await GenerateMSCH(schematic)
 // console.log(tiles)
 
-console.log(schemBuffer.toString('base64'))
+const base64 = schemBuffer.toString('base64')
 
 await fs.writeFile(
 	path.join(__dirname, '../data/output.png'),
 	canvas.toBuffer('image/png')
 )
+
+await fs.writeFile(path.join(__dirname, '../data/output.txt'), base64)

@@ -12,6 +12,7 @@
 	"dependencies": {
 		"canvas": "^2.11.2",
 		"crc-32": "^1.2.2",
+		"image-q": "^4.0.0",
 		"mutf-8": "^1.0.0"
 	},
 	"scripts": {

@@ -36,7 +36,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 // console.log(schematic.tiles)
 
-const art = await loadImage(path.join(__dirname, '../data/omus.png'))
+const art = await loadImage(path.join(__dirname, '../data/reaper.png'))
 
 const [canvas, ditherCanvas] = await GenerateSorterArtImage({
 	art,

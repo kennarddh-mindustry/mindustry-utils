@@ -18,7 +18,9 @@
 	},
 	"scripts": {
 		"ping": "tsx ./src/ping.ts",
-		"start": "tsx ./src/testParseMSCH.ts"
+		"start": "tsx ./src/testParseMSCH.ts",
+		"test": "tsx ./src/cursedBridge.ts",
+		"airblast": "tsx ./src/cursedAirblast.ts"
 	},
 	"keywords": [
 		"typescript"
